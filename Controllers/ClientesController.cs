@@ -1,6 +1,5 @@
 ﻿using EstudoProjetoCS.Data;
 using EstudoProjetoCS.Models;
-using EstudoProjetoCS.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
