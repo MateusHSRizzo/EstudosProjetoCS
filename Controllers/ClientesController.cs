@@ -1,20 +1,24 @@
-﻿using EstudoProjetoCS.Models;
+﻿using EstudoProjetoCS.Data;
+using EstudoProjetoCS.Models;
 using EstudoProjetoCS.Repositorios;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EstudoProjetoCS.Controllers
 {
     public class ClientesController : Controller
     {
-        private readonly IClienteRepositorio _clienteRepositorio;
-        public ClientesController(IClienteRepositorio clienteRepositorio)
+        private readonly Contexto _contexto;
+
+        public ClientesController(Contexto contexto)
         {
-            _clienteRepositorio = clienteRepositorio;
+            _contexto = contexto;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var contexto = _contexto.Clientes;
+            return View(await contexto.ToListAsync());
         }
 
         public IActionResult Criar()
@@ -38,11 +42,16 @@ namespace EstudoProjetoCS.Controllers
         }
 
         [HttpPost]
-        public IActionResult Criar(ClienteModel cliente) 
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Criar([Bind("Id,Nome,Contato,Email,Documento,Genero,Nascimento,Endereco")] ClienteModel cliente) 
         {
-            _clienteRepositorio.Adicionar(cliente);
-
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                _contexto.Add(cliente);
+                await _contexto.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(cliente);
         }
     }
 }
