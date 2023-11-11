@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Listagem de Clientes";
+}
+
+<div class= "text-center">
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+        <a class="btn btn-primary" role="button" asp-controller="Clientes" asp-action="Criar">Novo Cliente</a>
+    </div>
+    <br />
+    <h1 class="display-4"> Listagem de Clientes</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Celular</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <tr>
+                <th scope="row">1</th>
+                <td>Mateus</td>
+                <td>mateusrizzo@outlook.com</td>
+                <td>18-996239914</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <a role="button" class="btn btn-outline-primary" asp-controller="Clientes" asp-action="Detalhes">Detalhes</a>
+                        <a role="button" class="btn btn-outline-primary"asp-controller="Clientes" asp-action="Editar">Editar</a>
+                        <a role="button" class="btn btn-outline-danger" asp-controller="Clientes" asp-action="Excluir">Excluir</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Isadora</td>
+                <td>isamatos@outlook.com</td>
+                <td>18-996821547</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <a role="button" class="btn btn-outline-primary" asp-controller="Clientes" asp-action="Detalhes">Detalhes</a>
+                        <a role="button" class="btn btn-outline-primary" asp-controller="Clientes" asp-action="Editar">Editar</a>
+                        <a role="button" class="btn btn-outline-danger" asp-controller="Clientes" asp-action="Excluir">Excluir</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>Lucas</td>
+                <td>LucasVitorelli@outlook.com</td>
+                <td>18-997895874</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <a role="button" class="btn btn-outline-primary" asp-controller="Clientes" asp-action="Detalhes">Detalhes</a>
+                        <a role="button" class="btn btn-outline-primary" asp-controller="Clientes" asp-action="Editar">Editar</a>
+                        <a role="button" class="btn btn-outline-danger" asp-controller="Clientes" asp-action="Excluir">Excluir</a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+

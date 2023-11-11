@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Confirmação excluisão de registro";
+}
+
+<div class="text-center">
+
+    <h3> Esta ação excluira permanentemente o registro, deseja continuar?</h3>
+
+    <br/>
+
+    <a class="btn btn-primary" role="button" asp-controller="Clientes" asp-action="Index">Cancelar Exclusão</a>
+    <a class="btn btn-danger" role="button" asp-controller="Cliente" asp-action="Apagar">Confirmar Exclusão</a>
+
+</div>
+

@@ -1,0 +1,46 @@
+﻿@model ClienteModel
+@{
+    ViewData["Title"] = "Novo Cliente";
+}
+
+<div class="text-center">
+
+    <h1 class="display-4"> Cadastro de Cliente</h1>
+</div>
+
+<form asp-controller="Cliente" asp-action="Criar" method="post">
+    <div class="form-group">
+        <label for="Nome">Nome</label>
+        <input type="text" asp-for="Nome" class="form-control" placeholder="Nome">
+    </div>
+    <div class="form-group">
+        <label for="Contato">Contato</label>
+        <input type="tel" asp-for="Contato" class="form-control" placeholder="Número de Celular">
+    </div>
+    <div class="form-group">
+        <label for="Email">E-Mail</label>
+        <input type="text" asp-for="Email" class="form-control" placeholder="E-Mail">
+    </div>
+    <div class="form-group">
+        <label for="Documento">Documento</label>
+        <input type="text" asp-for="Documento" class="form-control" placeholder="Número do Documento">
+    </div>
+    <div class="form-group">
+        <label for="Genero">Gênero</label>
+        <input type="text" asp-for="Genero" class="form-control" placeholder="Gênero">
+    </div>
+    <div class="form-group">
+        <label for="Nascimento">Nascimento</label>
+        <input type="date" asp-for="Nascimento" class="form-control" placeholder="Data de Nascimento">
+    </div>
+    <div class="form-group">
+        <label for="Endereco">Rua/Bairro</label>
+        <input type="text" asp-for="Endereco" class="form-control" placeholder="Endereço">
+    </div>
+
+    <br/>
+
+    <button type="submit" class="btn btn-primary">Adicionar</button>
+    <a class="btn btn-secondary" asp-controller="Clientes" asp-action="Index" role="button">Voltar</a>
+</form>
+
