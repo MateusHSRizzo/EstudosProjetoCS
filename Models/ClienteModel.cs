@@ -42,7 +42,7 @@ namespace EstudoProjetoCS.Models
 
 
         [Required(ErrorMessage = "*Campo Obrigatório*")]
-        [StringLength(50, ErrorMessage = "Excedido o limite de caracteres")]
+        [StringLength(200, ErrorMessage = "Excedido o limite de caracteres")]
         [Display(Name = "Rua/Bairro")]
         public string Endereco { get; set; }
 

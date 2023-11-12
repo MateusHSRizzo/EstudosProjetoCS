@@ -17,7 +17,7 @@ namespace EstudoProjetoCS.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var contexto = _contexto.Clientes.Include(c => c.Cidade);
+            var contexto = _contexto.Clientes.Include(c => c.Cidade).OrderBy(c=>c.Id);
             return View(await contexto.ToListAsync());
         }
 
