@@ -31,9 +31,9 @@
                     <td>@Html.DisplayFor(modelItem => item.Contato)</td>
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic outlined example">
-                            <a role="button" class="btn btn-outline-primary" asp-controller="Clientes" asp-action="Detalhes">Detalhes</a>
-                            <a role="button" class="btn btn-outline-primary" asp-controller="Clientes" asp-action="Editar">Editar</a>
-                            <a role="button" class="btn btn-outline-danger" asp-controller="Clientes" asp-action="Excluir">Excluir</a>
+                            <a role="button" class="btn btn-outline-primary" asp-controller="Clientes" asp-action="Detalhes" asp-route-id="@item.Id">Detalhes</a>
+                            <a role="button" class="btn btn-outline-primary" asp-controller="Clientes" asp-action="Editar" asp-route-id="@item.Id">Editar</a>
+                            <a role="button" class="btn btn-outline-danger" asp-controller="Clientes" asp-action="Excluir" asp-route-id="@item.Id">Excluir</a>
                         </div>
                     </td>
                 </tr>

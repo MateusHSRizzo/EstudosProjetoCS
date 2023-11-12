@@ -1,15 +1,59 @@
-﻿@{
+﻿@model ClienteModel
+@{
     ViewData["Title"] = "Confirmação excluisão de registro";
 }
 
 <div class="text-center">
 
-    <h3> Esta ação excluira permanentemente o registro, deseja continuar?</h3>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Dados</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.Nome)</th>
+                    <td>@Html.DisplayFor(model => model.Nome)</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.Contato)</th>
+                    <td>@Html.DisplayFor(model => model.Contato)</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.Email)</th>
+                    <td>@Html.DisplayFor(model => model.Email)</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.Documento)</th>
+                    <td>@Html.DisplayFor(model => model.Documento)</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.Genero)</th>
+                    <td>@Html.DisplayFor(model => model.Genero)</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.Nascimento)</th>
+                    <td>@Html.DisplayFor(model => model.Nascimento)</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.Endereco)</th>
+                    <td>@Html.DisplayFor(model => model.Endereco)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <br/>
+    <h3> Esta ação excluira permanentemente o registro, deseja continuar?</h3>
+    <br/>
 
-    <a class="btn btn-primary" role="button" asp-controller="Clientes" asp-action="Index">Cancelar Exclusão</a>
-    <a class="btn btn-danger" role="button" asp-controller="Cliente" asp-action="Apagar">Confirmar Exclusão</a>
-
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Excluir" class="btn btn-danger"/>
+        <a class="btn btn-primary" role="button" asp-controller="Clientes" asp-action="Index">Voltar</a>
+    </form>
 </div>
 

@@ -1,6 +1,7 @@
 ﻿using EstudoProjetoCS.Data;
 using EstudoProjetoCS.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace EstudoProjetoCS.Controllers
@@ -25,19 +26,98 @@ namespace EstudoProjetoCS.Controllers
             return View();
         }
 
-        public IActionResult Editar()
+        public async Task<IActionResult> Editar(int? id)
         {
-            return View();
+            if (id == null || _contexto.Clientes == null)
+            {
+                return NotFound();
+            }
+
+            var cliente = await _contexto.Clientes.FindAsync(id);
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+            return View(cliente);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Editar(int id, [Bind("Id,Nome,Contato,Email,Documento,Genero,Nascimento,Endereco")] ClienteModel cliente)
+        {
+            if (id != cliente.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _contexto.Update(cliente);
+                    await _contexto.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ClienteExists(cliente.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(cliente);
         }
 
-        public IActionResult Excluir()
+        public async Task<IActionResult> Excluir(int? id)
         {
-            return View();
+            if (id == null || _contexto.Clientes == null)
+            {
+                return NotFound();
+            }
+
+            var cliente = await _contexto.Clientes.FirstOrDefaultAsync(m => m.Id == id);
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
+            return View(cliente);
         }
 
-        public IActionResult Detalhes()
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            return View();
+            if (_contexto.Clientes == null)
+            {
+                return Problem("Entidade setada 'Contexto.Clientes'  está vazio.");
+            }
+            var cliente = await _contexto.Clientes.FindAsync(id);
+            if (cliente != null)
+            {
+                _contexto.Clientes.Remove(cliente);
+            }
+
+            await _contexto.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Detalhes(int? id)
+        {
+            if(id == null || _contexto.Clientes == null)
+            {
+                return NotFound();
+            }
+            var cliente = await _contexto.Clientes.FirstOrDefaultAsync(m => m.Id == id);
+            if(cliente == null)
+            {
+                return NotFound();
+            }
+            return View(cliente);
         }
 
         [HttpPost]
@@ -51,6 +131,11 @@ namespace EstudoProjetoCS.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(cliente);
+        }
+
+        private bool ClienteExists(int id)
+        {
+            return _contexto.Clientes.Any(e => e.Id == id);
         }
     }
 }
