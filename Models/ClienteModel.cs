@@ -4,6 +4,7 @@ using System.Xml.Linq;
 
 namespace EstudoProjetoCS.Models
 {
+    [Table("Cliente")]
     public class ClienteModel
     {
         [Key]
@@ -44,6 +45,11 @@ namespace EstudoProjetoCS.Models
         [StringLength(50, ErrorMessage = "Excedido o limite de caracteres")]
         [Display(Name = "Rua/Bairro")]
         public string Endereco { get; set; }
+
+        [Display(Name = "Cidade")]
+        public int IdCidade { get; set; }
+        [ForeignKey("IdCidade")]
+        public CidadeModel Cidade { get; set; }
     }
         
         

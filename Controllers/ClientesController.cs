@@ -17,13 +17,27 @@ namespace EstudoProjetoCS.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var contexto = _contexto.Clientes;
+            var contexto = _contexto.Clientes.Include(c => c.Cidade);
             return View(await contexto.ToListAsync());
         }
 
         public IActionResult Criar()
         {
+            ViewData["IdCidade"] = new SelectList(_contexto.Cidades, "Id", "Descricao");
             return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Criar([Bind("Id,Nome,Contato,Email,Documento,Genero,Nascimento,Endereco,IdCidade")] ClienteModel cliente)
+        {
+            if (ModelState.IsValid)
+            {
+                _contexto.Add(cliente);
+                await _contexto.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["IdCidade"] = new SelectList(_contexto.Cidades, "Id", "Descricao");
+            return View(cliente);
         }
 
         public async Task<IActionResult> Editar(int? id)
@@ -38,11 +52,12 @@ namespace EstudoProjetoCS.Controllers
             {
                 return NotFound();
             }
+            ViewData["IdCidade"] = new SelectList(_contexto.Cidades, "Id", "Descricao");
             return View(cliente);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(int id, [Bind("Id,Nome,Contato,Email,Documento,Genero,Nascimento,Endereco")] ClienteModel cliente)
+        public async Task<IActionResult> Editar(int id, [Bind("Id,Nome,Contato,Email,Documento,Genero,Nascimento,Endereco,IdCidade")] ClienteModel cliente)
         {
             if (id != cliente.Id)
             {
@@ -69,6 +84,7 @@ namespace EstudoProjetoCS.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["IdCidade"] = new SelectList(_contexto.Cidades, "Id", "Descricao");
             return View(cliente);
         }
 
@@ -79,7 +95,7 @@ namespace EstudoProjetoCS.Controllers
                 return NotFound();
             }
 
-            var cliente = await _contexto.Clientes.FirstOrDefaultAsync(m => m.Id == id);
+            var cliente = await _contexto.Clientes.Include(c => c.Cidade).FirstOrDefaultAsync(m => m.Id == id);
             if (cliente == null)
             {
                 return NotFound();
@@ -112,23 +128,10 @@ namespace EstudoProjetoCS.Controllers
             {
                 return NotFound();
             }
-            var cliente = await _contexto.Clientes.FirstOrDefaultAsync(m => m.Id == id);
+            var cliente = await _contexto.Clientes.Include(c => c.Cidade).FirstOrDefaultAsync(m => m.Id == id);
             if(cliente == null)
             {
                 return NotFound();
-            }
-            return View(cliente);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Criar([Bind("Id,Nome,Contato,Email,Documento,Genero,Nascimento,Endereco")] ClienteModel cliente) 
-        {
-            if (ModelState.IsValid)
-            {
-                _contexto.Add(cliente);
-                await _contexto.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
             return View(cliente);
         }
