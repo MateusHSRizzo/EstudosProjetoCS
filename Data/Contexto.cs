@@ -12,5 +12,7 @@ namespace EstudoProjetoCS.Data
         public DbSet<AtendenteModel> Atendentes { get; set; }
         public DbSet<ProcedimentoModel> Procedimentos { get; set; }
         public DbSet<TecnicoModel> Tecnicos { get; set; }
+        public DbSet<UsuarioModel> Usuarios { get; set; }
+        public DbSet<MovimentacaoUsuario> Movimentacoes { get; set; }
     }
 }

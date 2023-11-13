@@ -1,4 +1,5 @@
 ﻿using EstudoProjetoCS.Data;
+using EstudoProjetoCS.Filters;
 using EstudoProjetoCS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EstudoProjetoCS.Controllers
 {
+    [PagUsuarioLogado]
     public class ClientesController : Controller
     {
         private readonly Contexto _contexto;
@@ -21,11 +23,13 @@ namespace EstudoProjetoCS.Controllers
             return View(await contexto.ToListAsync());
         }
 
+        [PagUsuarioAdmAtt]
         public IActionResult Criar()
         {
             ViewData["IdCidade"] = new SelectList(_contexto.Cidades, "Id", "Descricao");
             return View();
         }
+        [PagUsuarioAdmAtt]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Criar([Bind("Id,Nome,Contato,Email,Documento,Genero,Nascimento,Endereco,IdCidade")] ClienteModel cliente)
@@ -40,6 +44,7 @@ namespace EstudoProjetoCS.Controllers
             return View(cliente);
         }
 
+        [PagUsuarioAdmAtt]
         public async Task<IActionResult> Editar(int? id)
         {
             if (id == null || _contexto.Clientes == null)
@@ -55,6 +60,7 @@ namespace EstudoProjetoCS.Controllers
             ViewData["IdCidade"] = new SelectList(_contexto.Cidades, "Id", "Descricao");
             return View(cliente);
         }
+        [PagUsuarioAdmAtt]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(int id, [Bind("Id,Nome,Contato,Email,Documento,Genero,Nascimento,Endereco,IdCidade")] ClienteModel cliente)
@@ -88,6 +94,7 @@ namespace EstudoProjetoCS.Controllers
             return View(cliente);
         }
 
+        [PagUsuarioAdmin]
         public async Task<IActionResult> Excluir(int? id)
         {
             if (id == null || _contexto.Clientes == null)
@@ -104,6 +111,7 @@ namespace EstudoProjetoCS.Controllers
             return View(cliente);
         }
 
+        [PagUsuarioAdmin]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

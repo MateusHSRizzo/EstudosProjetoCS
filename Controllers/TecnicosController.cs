@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EstudoProjetoCS.Data;
 using EstudoProjetoCS.Models;
+using EstudoProjetoCS.Filters;
 
 namespace EstudoProjetoCS.Controllers
 {
+    [PagUsuarioAdmin]
     public class TecnicosController : Controller
     {
         private readonly Contexto _context;

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EstudoProjetoCS.Data;
 using EstudoProjetoCS.Models;
+using EstudoProjetoCS.Filters;
 
 namespace EstudoProjetoCS.Controllers
 {
+    [PagUsuarioLogado]
     public class ProcedimentosController : Controller
     {
         private readonly Contexto _context;
@@ -47,6 +49,7 @@ namespace EstudoProjetoCS.Controllers
         }
 
         // GET: Procedimentos/Create
+        [PagUsuarioAdmAtt]
         public IActionResult Create()
         {
             ViewData["IdAtendente"] = new SelectList(_context.Atendentes, "Id", "Nome");
@@ -59,6 +62,7 @@ namespace EstudoProjetoCS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PagUsuarioAdmAtt]
         public async Task<IActionResult> Create([Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao,IdAtendente,IdCliente")] ProcedimentoModel procedimentoModel)
         {
             if (ModelState.IsValid)
@@ -73,6 +77,7 @@ namespace EstudoProjetoCS.Controllers
         }
 
         // GET: Procedimentos/Edit/5
+        [PagUsuarioAdmAtt]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Procedimentos == null)
@@ -95,6 +100,7 @@ namespace EstudoProjetoCS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PagUsuarioAdmAtt]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao,IdAtendente,IdCliente")] ProcedimentoModel procedimentoModel)
         {
             if (id != procedimentoModel.Id)
@@ -128,6 +134,7 @@ namespace EstudoProjetoCS.Controllers
         }
 
         // GET: Procedimentos/Delete/5
+        [PagUsuarioAdmAtt]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Procedimentos == null)
@@ -148,6 +155,7 @@ namespace EstudoProjetoCS.Controllers
         }
 
         // POST: Procedimentos/Delete/5
+        [PagUsuarioAdmAtt]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
