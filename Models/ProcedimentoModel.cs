@@ -13,7 +13,7 @@ namespace EstudoProjetoCS.Models
 
         [Required(ErrorMessage = "*Campo Obrigatório*")]
         [Display(Name = "Codigo do Procedimento")]
-        public int Codigo_Procedimento { get; set; }
+        public long Codigo_Procedimento { get; set; }
 
         [Required(ErrorMessage = "*Campo Obrigatório*")]
         [StringLength(1000, ErrorMessage = "Excedido o limite de caracteres")]
@@ -38,5 +38,10 @@ namespace EstudoProjetoCS.Models
         public int IdAtendente { get; set; }
         [ForeignKey("IdAtendente")]
         public AtendenteModel Atendente { get; set; }
+
+        [Display(Name = "Cliente")]
+        public int IdCliente { get; set; }
+        [ForeignKey("IdCliente")]
+        public ClienteModel Cliente { get; set; }
     }
 }

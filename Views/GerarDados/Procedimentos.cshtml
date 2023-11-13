@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<EstudoProjetoCS.Models.ProcedimentoModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Procedimentos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Procedimentos</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -59,7 +59,7 @@
                 @Html.DisplayFor(modelItem => item.Atendente.Nome)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cliente.Nome)
+                @Html.DisplayFor(modelItem => item.Cliente.Contato)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

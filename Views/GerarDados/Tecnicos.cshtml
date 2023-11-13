@@ -1,11 +1,11 @@
-﻿@model IEnumerable<EstudoProjetoCS.Models.AtendenteModel>
+﻿@model IEnumerable<EstudoProjetoCS.Models.TecnicoModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Tecnicos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Tecnicos</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -19,6 +19,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Registro)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Procedimento)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -30,6 +33,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Registro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Procedimento.Descricao)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -22,8 +22,7 @@ namespace EstudoProjetoCS.Controllers
         // GET: Atendentes
         public async Task<IActionResult> Index()
         {
-            var contexto = _context.Atendentes.Include(a => a.Cliente);
-            return View(await contexto.ToListAsync());
+              return View(await _context.Atendentes.ToListAsync());
         }
 
         // GET: Atendentes/Details/5
@@ -35,7 +34,6 @@ namespace EstudoProjetoCS.Controllers
             }
 
             var atendenteModel = await _context.Atendentes
-                .Include(a => a.Cliente)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (atendenteModel == null)
             {
@@ -48,7 +46,6 @@ namespace EstudoProjetoCS.Controllers
         // GET: Atendentes/Create
         public IActionResult Create()
         {
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Contato");
             return View();
         }
 
@@ -57,7 +54,7 @@ namespace EstudoProjetoCS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Registro,IdCliente")] AtendenteModel atendenteModel)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Registro")] AtendenteModel atendenteModel)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +62,6 @@ namespace EstudoProjetoCS.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Contato", atendenteModel.IdCliente);
             return View(atendenteModel);
         }
 
@@ -82,7 +78,6 @@ namespace EstudoProjetoCS.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Contato", atendenteModel.IdCliente);
             return View(atendenteModel);
         }
 
@@ -91,7 +86,7 @@ namespace EstudoProjetoCS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Registro,IdCliente")] AtendenteModel atendenteModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Registro")] AtendenteModel atendenteModel)
         {
             if (id != atendenteModel.Id)
             {
@@ -118,7 +113,6 @@ namespace EstudoProjetoCS.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Contato", atendenteModel.IdCliente);
             return View(atendenteModel);
         }
 
@@ -131,7 +125,6 @@ namespace EstudoProjetoCS.Controllers
             }
 
             var atendenteModel = await _context.Atendentes
-                .Include(a => a.Cliente)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (atendenteModel == null)
             {

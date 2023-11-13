@@ -18,7 +18,7 @@ namespace EstudoProjetoCS.Models
 
         [Required(ErrorMessage = "*Campo Obrigatório*")]
         [Display(Name = "NRF-(Numero de registro de funcionário)")]
-        public int Registro { get; set; }
+        public long Registro { get; set; }
 
         [Display(Name = "Procedimento")]
         public int IdProcedimento { get; set; }

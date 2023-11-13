@@ -22,7 +22,7 @@ namespace EstudoProjetoCS.Controllers
         // GET: Procedimentos
         public async Task<IActionResult> Index()
         {
-            var contexto = _context.Procedimentos.Include(p => p.Atendente);
+            var contexto = _context.Procedimentos.Include(p => p.Atendente).Include(p => p.Cliente);
             return View(await contexto.ToListAsync());
         }
 
@@ -36,6 +36,7 @@ namespace EstudoProjetoCS.Controllers
 
             var procedimentoModel = await _context.Procedimentos
                 .Include(p => p.Atendente)
+                .Include(p => p.Cliente)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (procedimentoModel == null)
             {
@@ -49,6 +50,7 @@ namespace EstudoProjetoCS.Controllers
         public IActionResult Create()
         {
             ViewData["IdAtendente"] = new SelectList(_context.Atendentes, "Id", "Nome");
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nome");
             return View();
         }
 
@@ -57,7 +59,7 @@ namespace EstudoProjetoCS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao,IdAtendente")] ProcedimentoModel procedimentoModel)
+        public async Task<IActionResult> Create([Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao,IdAtendente,IdCliente")] ProcedimentoModel procedimentoModel)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +68,7 @@ namespace EstudoProjetoCS.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdAtendente"] = new SelectList(_context.Atendentes, "Id", "Nome", procedimentoModel.IdAtendente);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nome", procedimentoModel.IdCliente);
             return View(procedimentoModel);
         }
 
@@ -83,6 +86,7 @@ namespace EstudoProjetoCS.Controllers
                 return NotFound();
             }
             ViewData["IdAtendente"] = new SelectList(_context.Atendentes, "Id", "Nome", procedimentoModel.IdAtendente);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nome", procedimentoModel.IdCliente);
             return View(procedimentoModel);
         }
 
@@ -91,7 +95,7 @@ namespace EstudoProjetoCS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao,IdAtendente")] ProcedimentoModel procedimentoModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao,IdAtendente,IdCliente")] ProcedimentoModel procedimentoModel)
         {
             if (id != procedimentoModel.Id)
             {
@@ -119,6 +123,7 @@ namespace EstudoProjetoCS.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdAtendente"] = new SelectList(_context.Atendentes, "Id", "Nome", procedimentoModel.IdAtendente);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nome", procedimentoModel.IdCliente);
             return View(procedimentoModel);
         }
 
@@ -132,6 +137,7 @@ namespace EstudoProjetoCS.Controllers
 
             var procedimentoModel = await _context.Procedimentos
                 .Include(p => p.Atendente)
+                .Include(p => p.Cliente)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (procedimentoModel == null)
             {

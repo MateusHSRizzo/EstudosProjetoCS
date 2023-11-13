@@ -16,13 +16,8 @@ namespace EstudoProjetoCS.Models
         [Display(Name = "Nome")]
         public string Nome { get; set; }
         [Required(ErrorMessage = "*Campo Obrigatório*")]
+        [StringLength(11, ErrorMessage = "Excedido o limite de caracteres")]
         [Display(Name = "NRF-(Numero de registro de funcionário)")]
-        public int Registro { get; set; }
-
-        [Display(Name = "Cliente")]
-        public int IdCliente { get; set; }
-        [ForeignKey("IdCliente")]
-        public ClienteModel Cliente { get; set; }
-
+        public string Registro { get; set; }
     }
 }

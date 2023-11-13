@@ -4,6 +4,7 @@ using EstudoProjetoCS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EstudoProjetoCS.Migrations
 {
     [DbContext(typeof(Contexto))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20231113124311_AtendenteModel")]
+    partial class AtendenteModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +33,9 @@ namespace EstudoProjetoCS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("IdCliente")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(35)
@@ -37,10 +43,11 @@ namespace EstudoProjetoCS.Migrations
 
                     b.Property<string>("Registro")
                         .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdCliente");
 
                     b.ToTable("Atendente");
                 });
@@ -125,8 +132,8 @@ namespace EstudoProjetoCS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("Codigo_Procedimento")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Codigo_Procedimento")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Data_Solicitacao")
                         .HasColumnType("datetime2");
@@ -137,9 +144,6 @@ namespace EstudoProjetoCS.Migrations
                         .HasColumnType("nvarchar(1000)");
 
                     b.Property<int>("IdAtendente")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdCliente")
                         .HasColumnType("int");
 
                     b.Property<string>("Prioridade")
@@ -153,8 +157,6 @@ namespace EstudoProjetoCS.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdAtendente");
-
-                    b.HasIndex("IdCliente");
 
                     b.ToTable("Procedimento");
                 });
@@ -175,14 +177,25 @@ namespace EstudoProjetoCS.Migrations
                         .HasMaxLength(35)
                         .HasColumnType("nvarchar(35)");
 
-                    b.Property<long>("Registro")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Registro")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IdProcedimento");
 
                     b.ToTable("Tecnico");
+                });
+
+            modelBuilder.Entity("EstudoProjetoCS.Models.AtendenteModel", b =>
+                {
+                    b.HasOne("EstudoProjetoCS.Models.ClienteModel", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("IdCliente")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
                 });
 
             modelBuilder.Entity("EstudoProjetoCS.Models.ClienteModel", b =>
@@ -204,15 +217,7 @@ namespace EstudoProjetoCS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EstudoProjetoCS.Models.ClienteModel", "Cliente")
-                        .WithMany()
-                        .HasForeignKey("IdCliente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Atendente");
-
-                    b.Navigation("Cliente");
                 });
 
             modelBuilder.Entity("EstudoProjetoCS.Models.TecnicoModel", b =>
