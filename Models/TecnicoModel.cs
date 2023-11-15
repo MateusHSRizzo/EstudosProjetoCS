@@ -19,10 +19,5 @@ namespace EstudoProjetoCS.Models
         [Required(ErrorMessage = "*Campo Obrigatório*")]
         [Display(Name = "NRF-(Numero de registro de funcionário)")]
         public long Registro { get; set; }
-
-        [Display(Name = "Procedimento")]
-        public int IdProcedimento { get; set; }
-        [ForeignKey("IdProcedimento")]
-        public ProcedimentoModel Procedimento { get; set; }
     }
 }

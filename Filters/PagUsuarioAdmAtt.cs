@@ -26,7 +26,7 @@ namespace EstudoProjetoCS.Filters
                 {
                     if(usuario.Perfil != Enum.PerfilEnum.atendente)
                     {
-                        context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "controller", "Home" }, { "action", "Index" } });
+                        context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "controller", "Restrito" }, { "action", "Index" } });
                     }
                 }
             }

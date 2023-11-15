@@ -24,8 +24,7 @@ namespace EstudoProjetoCS.Controllers
         // GET: Tecnicos
         public async Task<IActionResult> Index()
         {
-            var contexto = _context.Tecnicos.Include(t => t.Procedimento);
-            return View(await contexto.ToListAsync());
+              return View(await _context.Tecnicos.ToListAsync());
         }
 
         // GET: Tecnicos/Details/5
@@ -37,7 +36,6 @@ namespace EstudoProjetoCS.Controllers
             }
 
             var tecnicoModel = await _context.Tecnicos
-                .Include(t => t.Procedimento)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tecnicoModel == null)
             {
@@ -50,7 +48,6 @@ namespace EstudoProjetoCS.Controllers
         // GET: Tecnicos/Create
         public IActionResult Create()
         {
-            ViewData["IdProcedimento"] = new SelectList(_context.Procedimentos, "Id", "Descricao");
             return View();
         }
 
@@ -59,15 +56,23 @@ namespace EstudoProjetoCS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Registro,IdProcedimento")] TecnicoModel tecnicoModel)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Registro")] TecnicoModel tecnicoModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(tecnicoModel);
-                await _context.SaveChangesAsync();
+                if (ModelState.IsValid)
+                {
+                    _context.Add(tecnicoModel);
+                    await _context.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = "Registro realizada com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["MenssagemErro"] = $"Registro falhou! {e.Message}";
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdProcedimento"] = new SelectList(_context.Procedimentos, "Id", "Descricao", tecnicoModel.IdProcedimento);
             return View(tecnicoModel);
         }
 
@@ -84,7 +89,6 @@ namespace EstudoProjetoCS.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdProcedimento"] = new SelectList(_context.Procedimentos, "Id", "Descricao", tecnicoModel.IdProcedimento);
             return View(tecnicoModel);
         }
 
@@ -93,7 +97,7 @@ namespace EstudoProjetoCS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Registro,IdProcedimento")] TecnicoModel tecnicoModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Registro")] TecnicoModel tecnicoModel)
         {
             if (id != tecnicoModel.Id)
             {
@@ -106,8 +110,10 @@ namespace EstudoProjetoCS.Controllers
                 {
                     _context.Update(tecnicoModel);
                     await _context.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = $"Atualização realizada com sucesso";
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException e)
                 {
                     if (!TecnicoModelExists(tecnicoModel.Id))
                     {
@@ -115,12 +121,11 @@ namespace EstudoProjetoCS.Controllers
                     }
                     else
                     {
-                        throw;
+                        TempData["MenssagemErro"] = $"Atualização falhou! {e.Message}";
+                        return RedirectToAction(nameof(Index));
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["IdProcedimento"] = new SelectList(_context.Procedimentos, "Id", "Descricao", tecnicoModel.IdProcedimento);
             return View(tecnicoModel);
         }
 
@@ -133,7 +138,6 @@ namespace EstudoProjetoCS.Controllers
             }
 
             var tecnicoModel = await _context.Tecnicos
-                .Include(t => t.Procedimento)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tecnicoModel == null)
             {
@@ -150,7 +154,7 @@ namespace EstudoProjetoCS.Controllers
         {
             if (_context.Tecnicos == null)
             {
-                return Problem("Entity set 'Contexto.Tecnicos'  is null.");
+                return Problem("Entidade não existe!");
             }
             var tecnicoModel = await _context.Tecnicos.FindAsync(id);
             if (tecnicoModel != null)
@@ -159,6 +163,7 @@ namespace EstudoProjetoCS.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["MenssagemErro"] = $"Registro deletado com sucesso!";
             return RedirectToAction(nameof(Index));
         }
 

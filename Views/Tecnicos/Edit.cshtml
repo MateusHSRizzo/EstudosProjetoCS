@@ -5,41 +5,30 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<div class="text-center">
+    <h1 class="display-4"> Editar Cadastro</h1>
+</div>
 
-<h4>TecnicoModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
-                <input asp-for="Nome" class="form-control" />
-                <span asp-validation-for="Nome" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Registro" class="control-label"></label>
-                <input asp-for="Registro" class="form-control" />
-                <span asp-validation-for="Registro" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdProcedimento" class="control-label"></label>
-                <select asp-for="IdProcedimento" class="form-control" asp-items="ViewBag.IdProcedimento"></select>
-                <span asp-validation-for="IdProcedimento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-controller="Tecnicos" asp-action="Edit" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Nome" class="control-label"></label>
+        <input asp-for="Nome" class="form-control" />
+        <span asp-validation-for="Nome" class="text-danger"></span>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="form-group">
+        <label asp-for="Registro" class="control-label"></label>
+        <input asp-for="Registro" class="form-control" />
+        <span asp-validation-for="Registro" class="text-danger"></span>
+    </div>
+    <br />
+    <input type="submit" value="Salvar" class="btn btn-primary" />
+    <a class="btn btn-secondary" asp-controller="Tecnicos" asp-action="Index" role="button">Voltar</a>
+</form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

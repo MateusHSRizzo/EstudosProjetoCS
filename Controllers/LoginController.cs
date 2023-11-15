@@ -45,7 +45,10 @@ namespace EstudoProjetoCS.Controllers
                             _sessao.CriarSessao(usuario);
                             return RedirectToAction("Index", "Home");
                         }
+                        TempData["MenssagemErro"] = "Senha incorreta!";
+                        return RedirectToAction(nameof(Index));
                     }
+                    TempData["MenssagemErro"] = "Usuário incorreto!";
                 }
                 return View("Index");
             }

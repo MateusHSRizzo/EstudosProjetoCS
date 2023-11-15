@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EstudoProjetoCS.styles.css" asp-append-version="true" />
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.7/datatables.min.css" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -24,11 +25,12 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; RizzoSoftware - Controle de Ordem de Serviço - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidade</a>
+            &copy; R&V-Software - Controle de Ordem de Serviço - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidade</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.7/datatables.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

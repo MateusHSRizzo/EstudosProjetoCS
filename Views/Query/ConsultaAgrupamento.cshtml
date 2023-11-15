@@ -1,0 +1,27 @@
+﻿@model IEnumerable<EstudoProjetoCS.Models.CidadeModel>
+
+@{
+    ViewData["Title"] = "ConsultaAgrupamento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Listagem de Cidades</h1>
+    <br />
+    <table class="table" id="TablePag">
+        <thead>
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.Estado)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td scope="row">@Html.DisplayFor(modelItem => item.Estado)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a class="btn btn-primary" role="button" asp-controller="Cidades" asp-action="Index">Voltar</a>
+</div>

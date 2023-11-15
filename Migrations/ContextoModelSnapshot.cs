@@ -165,6 +165,9 @@ namespace EstudoProjetoCS.Migrations
                     b.Property<int>("IdCliente")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdTecnico")
+                        .HasColumnType("int");
+
                     b.Property<string>("Prioridade")
                         .IsRequired()
                         .HasMaxLength(5)
@@ -179,6 +182,8 @@ namespace EstudoProjetoCS.Migrations
 
                     b.HasIndex("IdCliente");
 
+                    b.HasIndex("IdTecnico");
+
                     b.ToTable("Procedimento");
                 });
 
@@ -190,9 +195,6 @@ namespace EstudoProjetoCS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("IdProcedimento")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(35)
@@ -202,8 +204,6 @@ namespace EstudoProjetoCS.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdProcedimento");
 
                     b.ToTable("Tecnico");
                 });
@@ -264,20 +264,17 @@ namespace EstudoProjetoCS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Atendente");
-
-                    b.Navigation("Cliente");
-                });
-
-            modelBuilder.Entity("EstudoProjetoCS.Models.TecnicoModel", b =>
-                {
-                    b.HasOne("EstudoProjetoCS.Models.ProcedimentoModel", "Procedimento")
+                    b.HasOne("EstudoProjetoCS.Models.TecnicoModel", "Tecnico")
                         .WithMany()
-                        .HasForeignKey("IdProcedimento")
+                        .HasForeignKey("IdTecnico")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Procedimento");
+                    b.Navigation("Atendente");
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Tecnico");
                 });
 #pragma warning restore 612, 618
         }

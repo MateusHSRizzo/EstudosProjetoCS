@@ -4,11 +4,10 @@
 }
 
 <div class="text-center">
-
     <h1 class="display-4"> Editar Cadastro</h1>
 </div>
 
-<form asp-action="Editar">
+<form asp-action="Editar" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" />
     <div class="form-group">

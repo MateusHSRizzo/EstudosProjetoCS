@@ -58,12 +58,22 @@ namespace EstudoProjetoCS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Descricao,Estado")] CidadeModel cidadeModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(cidadeModel);
-                await _context.SaveChangesAsync();
+                if (ModelState.IsValid)
+                {
+                    _context.Add(cidadeModel);
+                    await _context.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = "Registro realizado com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["MenssagemErro"] = $"Registro falhou! {e.Message}";
                 return RedirectToAction(nameof(Index));
             }
+            
             return View(cidadeModel);
         }
 
@@ -101,8 +111,10 @@ namespace EstudoProjetoCS.Controllers
                 {
                     _context.Update(cidadeModel);
                     await _context.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = "Atualização realizada com sucesso!";
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException e)
                 {
                     if (!CidadeModelExists(cidadeModel.Id))
                     {
@@ -110,10 +122,10 @@ namespace EstudoProjetoCS.Controllers
                     }
                     else
                     {
-                        throw;
+                        TempData["MenssagemErro"] = $"Atualização falhou! {e.Message}";
+                        return RedirectToAction(nameof(Index));
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             return View(cidadeModel);
         }
@@ -152,6 +164,7 @@ namespace EstudoProjetoCS.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["MenssagemSucesso"] = "Registro deletado com sucesso!";
             return RedirectToAction(nameof(Index));
         }
 

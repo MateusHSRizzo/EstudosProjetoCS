@@ -3,15 +3,41 @@
     Layout = "_LayoutDeslogado";
     ViewData["Title"] = "Login";
 }
-
-<form asp-controller="Login" asp-action="Entrar" method="post">
-    <div class="mb-3">
-        <label for="login" class="form-label">Usuário</label>
-        <input asp-for="Login" class="form-control" id="login">
+@if (TempData["MenssagemSucesso"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+        @TempData["MenssagemSucesso"]
     </div>
-    <div class="mb-3">
-        <label for="password" class="form-label">Senha</label>
-        <input type="password" asp-for="Password" class="form-control" id="password">
+}
+@if (TempData["MenssagemErro"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+        @TempData["MenssagemErro"]
     </div>
-    <button type="submit" class="btn btn-primary">Entrar</button>
-</form>
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/Login.css">
+</head>
+<body>
+    <div class="page">
+        <form asp-controller="Login" asp-action="Entrar" method="post" class="formLogin">
+            <h1>Login</h1>
+            <p>Digite os seus dados de acesso no campo abaixo.</p>
+            <label for="Login">Usuario</label>
+            <input asp-for="Login" id="login" placeholder="Nome de Usuario" autofocus="true" />
+            <label for="password">Senha</label>
+            <input type="password" asp-for="Password" id="password" placeholder="Senha" />
+            <button type="submit" class="btn btn-primary">Entrar</button>
+        </form>
+    </div>
+    
+</body>
+</html>

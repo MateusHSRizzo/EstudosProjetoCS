@@ -2,19 +2,30 @@
 @{
     ViewData["Title"] = "Listagem de Clientes";
 }
-
-<div class= "text-center">
-
+@if (TempData["MenssagemSucesso"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+        @TempData["MenssagemSucesso"]
+    </div>
+}
+@if (TempData["MenssagemErro"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+        @TempData["MenssagemErro"]
+    </div>
+}
+<div class="text-center">
+    <h1 class="display-4"> Listagem de Clientes</h1>
+    <br />
     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
         <a class="btn btn-primary" role="button" asp-controller="Clientes" asp-action="Criar">Novo Cliente</a>
     </div>
     <br />
-    <h1 class="display-4"> Listagem de Clientes</h1>
-
-    <table class="table">
+    <table class="table" id="TablePag">
         <thead>
             <tr>
-                <th scope="col">#</th>
                 <th scope="col">@Html.DisplayNameFor(model => model.Nome)</th>
                 <th scope="col">@Html.DisplayNameFor(model => model.Email)</th>
                 <th scope="col">@Html.DisplayNameFor(model => model.Contato)</th>
@@ -25,15 +36,14 @@
             @foreach(var item in Model)
             {
                 <tr>
-                    <th scope="row">@Html.DisplayFor(modelItem => item.Id)</th>
-                    <td>@Html.DisplayFor(modelItem => item.Nome)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Contato)</td>
-                    <td>
+                    <td scope="row">@Html.DisplayFor(modelItem => item.Nome)</td>
+                    <td scope="row">@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td scope="row">@Html.DisplayFor(modelItem => item.Contato)</td>
+                    <td scope="row">
                         <div class="btn-group" role="group" aria-label="Basic outlined example">
-                            <a role="button" class="btn btn-outline-primary" asp-controller="Clientes" asp-action="Detalhes" asp-route-id="@item.Id">Detalhes</a>
-                            <a role="button" class="btn btn-outline-primary" asp-controller="Clientes" asp-action="Editar" asp-route-id="@item.Id">Editar</a>
-                            <a role="button" class="btn btn-outline-danger" asp-controller="Clientes" asp-action="Excluir" asp-route-id="@item.Id">Excluir</a>
+                            <a role="button" class="btn btn-outline-primary" asp-action="Detalhes" asp-route-id="@item.Id">Detalhes</a>
+                            <a role="button" class="btn btn-outline-primary" asp-action="Editar" asp-route-id="@item.Id">Editar</a>
+                            <a role="button" class="btn btn-outline-danger" asp-action="Excluir" asp-route-id="@item.Id">Excluir</a>
                         </div>
                     </td>
                 </tr>

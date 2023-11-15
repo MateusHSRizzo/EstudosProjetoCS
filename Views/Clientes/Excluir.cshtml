@@ -2,9 +2,21 @@
 @{
     ViewData["Title"] = "Confirmação excluisão de registro";
 }
-
+@if (TempData["MenssagemSucesso"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+        @TempData["MenssagemSucesso"]
+    </div>
+}
+@if (TempData["MenssagemErro"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+        @TempData["MenssagemErro"]
+    </div>
+}
 <div class="text-center">
-
     <div>
         <table class="table">
             <thead>
@@ -50,13 +62,13 @@
         </table>
     </div>
 
-    <br/>
+    <br />
     <h3> Esta ação excluira permanentemente o registro, deseja continuar?</h3>
-    <br/>
+    <br />
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Excluir" class="btn btn-danger"/>
+        <input type="submit" value="Excluir" class="btn btn-danger" />
         <a class="btn btn-primary" role="button" asp-controller="Clientes" asp-action="Index">Voltar</a>
     </form>
 </div>

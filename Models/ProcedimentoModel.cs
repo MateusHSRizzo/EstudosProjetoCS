@@ -43,5 +43,10 @@ namespace EstudoProjetoCS.Models
         public int IdCliente { get; set; }
         [ForeignKey("IdCliente")]
         public ClienteModel Cliente { get; set; }
+
+        [Display(Name = "Tecnico")]
+        public int IdTecnico { get; set; }
+        [ForeignKey("IdTecnico")]
+        public TecnicoModel Tecnico { get; set; }
     }
 }

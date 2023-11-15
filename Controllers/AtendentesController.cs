@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using EstudoProjetoCS.Data;
 using EstudoProjetoCS.Models;
 using EstudoProjetoCS.Filters;
+using System.Linq.Expressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EstudoProjetoCS.Controllers
 {
@@ -58,10 +60,19 @@ namespace EstudoProjetoCS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome,Registro")] AtendenteModel atendenteModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(atendenteModel);
-                await _context.SaveChangesAsync();
+                if (ModelState.IsValid)
+                {
+                    _context.Add(atendenteModel);
+                    await _context.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = "Registro realizada com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["MenssagemErro"] = $"Atulização falhou! {e.Message}";
                 return RedirectToAction(nameof(Index));
             }
             return View(atendenteModel);
@@ -101,8 +112,9 @@ namespace EstudoProjetoCS.Controllers
                 {
                     _context.Update(atendenteModel);
                     await _context.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = "Atualização realizada com sucesso!";
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException e)
                 {
                     if (!AtendenteModelExists(atendenteModel.Id))
                     {
@@ -110,10 +122,10 @@ namespace EstudoProjetoCS.Controllers
                     }
                     else
                     {
-                        throw;
+                        TempData["MenssagemErro"] = $"Atulização falhou! {e.Message}";
+                        return RedirectToAction(nameof(Index));
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             return View(atendenteModel);
         }
@@ -143,21 +155,22 @@ namespace EstudoProjetoCS.Controllers
         {
             if (_context.Atendentes == null)
             {
-                return Problem("Entity set 'Contexto.Atendentes'  is null.");
+                return Problem("Entidade não existe!");
             }
             var atendenteModel = await _context.Atendentes.FindAsync(id);
             if (atendenteModel != null)
             {
                 _context.Atendentes.Remove(atendenteModel);
             }
-            
+
             await _context.SaveChangesAsync();
+            TempData["MenssagemSucesso"] = "Registro deletado com sucesso!";
             return RedirectToAction(nameof(Index));
         }
 
         private bool AtendenteModelExists(int id)
         {
-          return _context.Atendentes.Any(e => e.Id == id);
+            return _context.Atendentes.Any(e => e.Id == id);
         }
     }
 }

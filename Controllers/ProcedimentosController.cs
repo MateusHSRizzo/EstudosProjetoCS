@@ -24,7 +24,7 @@ namespace EstudoProjetoCS.Controllers
         // GET: Procedimentos
         public async Task<IActionResult> Index()
         {
-            var contexto = _context.Procedimentos.Include(p => p.Atendente).Include(p => p.Cliente);
+            var contexto = _context.Procedimentos.Include(p => p.Atendente).Include(p => p.Cliente).Include(p => p.Tecnico);
             return View(await contexto.ToListAsync());
         }
 
@@ -39,6 +39,7 @@ namespace EstudoProjetoCS.Controllers
             var procedimentoModel = await _context.Procedimentos
                 .Include(p => p.Atendente)
                 .Include(p => p.Cliente)
+                .Include(p => p.Tecnico)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (procedimentoModel == null)
             {
@@ -54,25 +55,36 @@ namespace EstudoProjetoCS.Controllers
         {
             ViewData["IdAtendente"] = new SelectList(_context.Atendentes, "Id", "Nome");
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nome");
+            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nome");
             return View();
         }
 
         // POST: Procedimentos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [PagUsuarioAdmAtt]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [PagUsuarioAdmAtt]
-        public async Task<IActionResult> Create([Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao,IdAtendente,IdCliente")] ProcedimentoModel procedimentoModel)
+        public async Task<IActionResult> Create([Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao,IdAtendente,IdCliente,IdTecnico")] ProcedimentoModel procedimentoModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(procedimentoModel);
-                await _context.SaveChangesAsync();
+                if (ModelState.IsValid)
+                {
+                    _context.Add(procedimentoModel);
+                    await _context.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = "Registro criado com seucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["MenssagemErro"] = $"Registro falhou! {e.Message}";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdAtendente"] = new SelectList(_context.Atendentes, "Id", "Nome", procedimentoModel.IdAtendente);
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nome", procedimentoModel.IdCliente);
+            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nome", procedimentoModel.IdTecnico);
             return View(procedimentoModel);
         }
 
@@ -92,16 +104,17 @@ namespace EstudoProjetoCS.Controllers
             }
             ViewData["IdAtendente"] = new SelectList(_context.Atendentes, "Id", "Nome", procedimentoModel.IdAtendente);
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nome", procedimentoModel.IdCliente);
+            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nome", procedimentoModel.IdTecnico);
             return View(procedimentoModel);
         }
 
         // POST: Procedimentos/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [PagUsuarioAdmAtt]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [PagUsuarioAdmAtt]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao,IdAtendente,IdCliente")] ProcedimentoModel procedimentoModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao,IdAtendente,IdCliente,IdTecnico")] ProcedimentoModel procedimentoModel)
         {
             if (id != procedimentoModel.Id)
             {
@@ -114,8 +127,10 @@ namespace EstudoProjetoCS.Controllers
                 {
                     _context.Update(procedimentoModel);
                     await _context.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = "Atualização realizada com sucesso!";
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException e)
                 {
                     if (!ProcedimentoModelExists(procedimentoModel.Id))
                     {
@@ -123,18 +138,19 @@ namespace EstudoProjetoCS.Controllers
                     }
                     else
                     {
-                        throw;
+                        TempData["MenssagemErro"] = $"Atualização falhou! {e.Message}";
+                        return RedirectToAction(nameof(Index));
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["IdAtendente"] = new SelectList(_context.Atendentes, "Id", "Nome", procedimentoModel.IdAtendente);
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nome", procedimentoModel.IdCliente);
+            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nome", procedimentoModel.IdTecnico);
             return View(procedimentoModel);
         }
 
         // GET: Procedimentos/Delete/5
-        [PagUsuarioAdmAtt]
+        [PagUsuarioAdmin]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Procedimentos == null)
@@ -145,6 +161,7 @@ namespace EstudoProjetoCS.Controllers
             var procedimentoModel = await _context.Procedimentos
                 .Include(p => p.Atendente)
                 .Include(p => p.Cliente)
+                .Include(p => p.Tecnico)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (procedimentoModel == null)
             {
@@ -155,14 +172,14 @@ namespace EstudoProjetoCS.Controllers
         }
 
         // POST: Procedimentos/Delete/5
-        [PagUsuarioAdmAtt]
+        [PagUsuarioAdmin]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Procedimentos == null)
             {
-                return Problem("Entity set 'Contexto.Procedimentos'  is null.");
+                return Problem("Entidade não existe");
             }
             var procedimentoModel = await _context.Procedimentos.FindAsync(id);
             if (procedimentoModel != null)
@@ -171,6 +188,7 @@ namespace EstudoProjetoCS.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["MenssagemSucesso"] = "Registro deletado com sucesso!";
             return RedirectToAction(nameof(Index));
         }
 

@@ -58,11 +58,20 @@ namespace EstudoProjetoCS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome,Perfil,Login,Password")] UsuarioModel usuarioModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(usuarioModel);
-                await MovimentoCadastro(usuarioModel.Login);
-                await _context.SaveChangesAsync();
+                if (ModelState.IsValid)
+                {
+                    _context.Add(usuarioModel);
+                    await MovimentoCadastro(usuarioModel.Login);
+                    await _context.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = "Registro realizado com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["MenssagemErro"] = $"Registro falhou! {e.Message}";
                 return RedirectToAction(nameof(Index));
             }
             return View(usuarioModel);
@@ -116,8 +125,10 @@ namespace EstudoProjetoCS.Controllers
                     _context.Update(usuarioModel);
                     await MovimentoCadastro(usuarioModel.Login);
                     await _context.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = "Atualização realizada com sucesso!";
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException e)
                 {
                     if (!UsuarioModelExists(usuarioModel.Id))
                     {
@@ -125,10 +136,10 @@ namespace EstudoProjetoCS.Controllers
                     }
                     else
                     {
-                        throw;
+                        TempData["MenssagemErro"] = $"Atulização falhou! {e.Message}";
+                        return RedirectToAction(nameof(Index));
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             return View(usuarioModel);
         }
@@ -171,7 +182,7 @@ namespace EstudoProjetoCS.Controllers
         {
             if (_context.Usuarios == null)
             {
-                return Problem("Entity set 'Contexto.Usuarios'  is null.");
+                return Problem("Entidade não existe!");
             }
             var usuarioModel = await _context.Usuarios.FindAsync(id);
             if (usuarioModel != null)
@@ -180,6 +191,7 @@ namespace EstudoProjetoCS.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["MenssagemSucesso"] = "Registro deletado com sucesso!";
             return RedirectToAction(nameof(Index));
         }
 

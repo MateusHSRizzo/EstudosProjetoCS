@@ -34,10 +34,19 @@ namespace EstudoProjetoCS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Criar([Bind("Id,Nome,Contato,Email,Documento,Genero,Nascimento,Endereco,IdCidade")] ClienteModel cliente)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _contexto.Add(cliente);
-                await _contexto.SaveChangesAsync();
+                if (ModelState.IsValid)
+                {
+                    _contexto.Add(cliente);
+                    await _contexto.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = "Registro realizado com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["MenssagemErro"] = $"Registro falhou!{e.Message}";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdCidade"] = new SelectList(_contexto.Cidades, "Id", "Descricao");
@@ -76,8 +85,10 @@ namespace EstudoProjetoCS.Controllers
                 {
                     _contexto.Update(cliente);
                     await _contexto.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = "Atualização realizada com sucesso!";
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException e)
                 {
                     if (!ClienteExists(cliente.Id))
                     {
@@ -85,10 +96,10 @@ namespace EstudoProjetoCS.Controllers
                     }
                     else
                     {
-                        throw;
+                        TempData["MenssagemErro"] = $"Registro falhou! {e.Message}";
+                        return RedirectToAction(nameof(Index));
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["IdCidade"] = new SelectList(_contexto.Cidades, "Id", "Descricao");
             return View(cliente);
@@ -118,7 +129,7 @@ namespace EstudoProjetoCS.Controllers
         {
             if (_contexto.Clientes == null)
             {
-                return Problem("Entidade setada 'Contexto.Clientes'  está vazio.");
+                return Problem("Entidade não existe!");
             }
             var cliente = await _contexto.Clientes.FindAsync(id);
             if (cliente != null)
@@ -127,6 +138,7 @@ namespace EstudoProjetoCS.Controllers
             }
 
             await _contexto.SaveChangesAsync();
+            TempData["MenssagemSucesso"] = "Registro deletado com sucesso!";
             return RedirectToAction(nameof(Index));
         }
 
