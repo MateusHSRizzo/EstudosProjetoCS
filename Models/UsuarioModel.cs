@@ -17,6 +17,7 @@ namespace EstudoProjetoCS.Models
         [Display(Name = "Nome")]
         public string Nome { get; set; }
         [Required]
+        [Display(Name = "Tipo de Usuário")]
         public PerfilEnum Perfil { get; set; }
         [Required(ErrorMessage = "*Campo Obrigatório*")]
         [StringLength(100, ErrorMessage = "Excedido o limite de caracteres")]

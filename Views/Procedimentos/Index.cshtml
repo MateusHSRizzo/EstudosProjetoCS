@@ -29,13 +29,16 @@
         <thead>
             <tr>
                 <th>
+                    @Html.DisplayNameFor(model => model.Tecnico.Nome)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Descricao)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Prioridade)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Tecnico.Nome)
+                    @Html.DisplayNameFor(model => model.Estado)
                 </th>
                 <th></th>
             </tr>
@@ -45,13 +48,16 @@
             {
                 <tr>
                     <td>
+                        @Html.DisplayFor(modelItem => item.Tecnico.Nome)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Descricao)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Prioridade)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Tecnico.Nome)
+                        @Html.DisplayFor(modelItem => item.Estado)
                     </td>
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic outlined example">
@@ -64,4 +70,8 @@
             }
         </tbody>
     </table>
+    <br />
+    <a class="btn btn-primary" role="button" asp-controller="Query" asp-action="ConsultaAgrupamentoMes">Soma dos Valores por Mês</a>
+    <a class="btn btn-primary" role="button" asp-controller="Query" asp-action="ConsultaMultiplasTabelas">Soma dos valores anuais por Técnico</a>
+    <a class="btn btn-primary" role="button" asp-controller="Query" asp-action="ConsultaPivotEstado">Valores por andamento</a>
 </div>

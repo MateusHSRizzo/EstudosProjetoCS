@@ -50,23 +50,18 @@
                 <tr>
                     <th scope="row">@Html.DisplayNameFor(model => model.Tecnico)</th>
                     <td>@Html.DisplayFor(model => model.Tecnico.Nome)</td>
-             </tr>
+                </tr>
             </tbody>
         </table>
     </div>
-    @if (Model.Estado != EstudoProjetoCS.Enum.ProcedimentoEnum.Concluido)
-    {
-        @if (Model.Estado != EstudoProjetoCS.Enum.ProcedimentoEnum.Cancelado)
-        {
-            <a class="btn btn-primary" role="button" asp-action="ConcluirProcedimento" asp-route-id="@Model.Id">Concluir Procedimento</a>
-        }
-    }
-    @if (Model.Estado != EstudoProjetoCS.Enum.ProcedimentoEnum.Concluido)
-    {
-        @if (Model.Estado != EstudoProjetoCS.Enum.ProcedimentoEnum.Cancelado)
-        {
-            <a class="btn btn-primary" role="button" asp-action="CancelarProcedimento" asp-route-id="@Model.Id">Cancelar Procedimento</a>
-        }
-    }
-    <a class="btn btn-primary" role="button" asp-action="Index">Voltar</a>
+
+    <br />
+    <h3> Ao concluir o procedimento não será mais possível a alteração, deseja continuar?</h3>
+    <br />
+
+    <form asp-action="ConcluirProcedimento">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Concluir" class="btn btn-success" />
+        <a class="btn btn-primary" role="button" asp-action="Index">Voltar</a>
+    </form>
 </div>

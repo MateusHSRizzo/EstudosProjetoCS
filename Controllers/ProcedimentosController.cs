@@ -65,12 +65,13 @@ namespace EstudoProjetoCS.Controllers
         [PagUsuarioAdmAtt]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao,IdAtendente,IdCliente,IdTecnico")] ProcedimentoModel procedimentoModel)
+        public async Task<IActionResult> Create([Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao, Estado,IdAtendente,IdCliente,IdTecnico")] ProcedimentoModel procedimentoModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    procedimentoModel.Estado = Enum.ProcedimentoEnum.EmAndamento;
                     _context.Add(procedimentoModel);
                     await _context.SaveChangesAsync();
                     TempData["MenssagemSucesso"] = "Registro criado com seucesso!";
@@ -108,13 +109,14 @@ namespace EstudoProjetoCS.Controllers
             return View(procedimentoModel);
         }
 
+
         // POST: Procedimentos/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [PagUsuarioAdmAtt]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao,IdAtendente,IdCliente,IdTecnico")] ProcedimentoModel procedimentoModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao, Estado,IdAtendente,IdCliente,IdTecnico")] ProcedimentoModel procedimentoModel)
         {
             if (id != procedimentoModel.Id)
             {
@@ -147,6 +149,118 @@ namespace EstudoProjetoCS.Controllers
             ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nome", procedimentoModel.IdCliente);
             ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nome", procedimentoModel.IdTecnico);
             return View(procedimentoModel);
+        }
+
+        [PagUsuarioAdmTec]
+        public async Task<IActionResult> ConcluirProcedimento(int? id)
+        {
+            if (id == null || _context.Procedimentos == null)
+            {
+                return NotFound();
+            }
+
+            var procedimentoModel = await _context.Procedimentos
+                .Include(p => p.Atendente)
+                .Include(p => p.Cliente)
+                .Include(p => p.Tecnico)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (procedimentoModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(procedimentoModel);
+        }
+        
+        [PagUsuarioAdmTec]
+        [HttpPost, ActionName("ConcluirProcedimento")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConcluirProcedimentoConfirmado(int id, [Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao, Estado,IdAtendente,IdCliente,IdTecnico")] ProcedimentoModel procedimentoModel)
+        {
+            procedimentoModel = await _context.Procedimentos.FindAsync(id);
+            if (procedimentoModel != null)
+            {
+                try
+                {
+                    procedimentoModel.Estado = Enum.ProcedimentoEnum.Concluido;
+                    _context.Update(procedimentoModel);
+                    await _context.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = "Procedimento Concluído!";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateConcurrencyException e)
+                {
+                    if (!ProcedimentoModelExists(procedimentoModel.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        TempData["MenssagemErro"] = $"Erro! {e.Message}";
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+            }
+            ViewData["IdAtendente"] = new SelectList(_context.Atendentes, "Id", "Nome", procedimentoModel.IdAtendente);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nome", procedimentoModel.IdCliente);
+            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nome", procedimentoModel.IdTecnico);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [PagUsuarioAdmTec]
+        public async Task<IActionResult> CancelarProcedimento(int? id)
+        {
+            if (id == null || _context.Procedimentos == null)
+            {
+                return NotFound();
+            }
+
+            var procedimentoModel = await _context.Procedimentos
+                .Include(p => p.Atendente)
+                .Include(p => p.Cliente)
+                .Include(p => p.Tecnico)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (procedimentoModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(procedimentoModel);
+        }
+
+        [PagUsuarioAdmTec]
+        [HttpPost, ActionName("CancelarProcedimento")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelarProcedimentoConfirmado(int id, [Bind("Id,Codigo_Procedimento,Descricao,Prioridade,Valor,Data_Solicitacao, Estado,IdAtendente,IdCliente,IdTecnico")] ProcedimentoModel procedimentoModel)
+        {
+            procedimentoModel = await _context.Procedimentos.FindAsync(id);
+            if (procedimentoModel != null)
+            {
+                try
+                {
+                    procedimentoModel.Estado = Enum.ProcedimentoEnum.Cancelado;
+                    _context.Update(procedimentoModel);
+                    await _context.SaveChangesAsync();
+                    TempData["MenssagemSucesso"] = "Procedimento Cancelado!";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateConcurrencyException e)
+                {
+                    if (!ProcedimentoModelExists(procedimentoModel.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        TempData["MenssagemErro"] = $"Erro! {e.Message}";
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+            }
+            ViewData["IdAtendente"] = new SelectList(_context.Atendentes, "Id", "Nome", procedimentoModel.IdAtendente);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Nome", procedimentoModel.IdCliente);
+            ViewData["IdTecnico"] = new SelectList(_context.Tecnicos, "Id", "Nome", procedimentoModel.IdTecnico);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Procedimentos/Delete/5
@@ -186,7 +300,7 @@ namespace EstudoProjetoCS.Controllers
             {
                 _context.Procedimentos.Remove(procedimentoModel);
             }
-            
+
             await _context.SaveChangesAsync();
             TempData["MenssagemSucesso"] = "Registro deletado com sucesso!";
             return RedirectToAction(nameof(Index));
@@ -194,7 +308,7 @@ namespace EstudoProjetoCS.Controllers
 
         private bool ProcedimentoModelExists(int id)
         {
-          return _context.Procedimentos.Any(e => e.Id == id);
+            return _context.Procedimentos.Any(e => e.Id == id);
         }
     }
 }

@@ -63,7 +63,6 @@ namespace EstudoProjetoCS.Controllers
                 if (ModelState.IsValid)
                 {
                     _context.Add(usuarioModel);
-                    await MovimentoCadastro(usuarioModel.Login);
                     await _context.SaveChangesAsync();
                     TempData["MenssagemSucesso"] = "Registro realizado com sucesso!";
                     return RedirectToAction(nameof(Index));
@@ -75,19 +74,6 @@ namespace EstudoProjetoCS.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(usuarioModel);
-        }
-        public async Task<IActionResult> MovimentoCadastro(string login)
-        {
-            if (ModelState.IsValid)
-            {
-                MovimentacaoUsuario movimentacaoUsuario = new MovimentacaoUsuario();
-                movimentacaoUsuario.DataCadastro = DateTime.Now;
-                movimentacaoUsuario.usuario = login;
-                _context.Add(movimentacaoUsuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(nameof(Index));
         }
 
         // GET: Usuarios/Edit/5
@@ -123,7 +109,6 @@ namespace EstudoProjetoCS.Controllers
                 try
                 {
                     _context.Update(usuarioModel);
-                    await MovimentoCadastro(usuarioModel.Login);
                     await _context.SaveChangesAsync();
                     TempData["MenssagemSucesso"] = "Atualização realizada com sucesso!";
                     return RedirectToAction(nameof(Index));
@@ -143,20 +128,7 @@ namespace EstudoProjetoCS.Controllers
             }
             return View(usuarioModel);
         }
-        public async Task<IActionResult> MovimentoAtualizacao(string login)
-        {
-            if (ModelState.IsValid)
-            {
-                MovimentacaoUsuario movimentacaoUsuario = new MovimentacaoUsuario();
-                movimentacaoUsuario.DataAtualizacao = DateTime.Now;
-                movimentacaoUsuario.usuario = login;
-                _context.Add(movimentacaoUsuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(nameof(Index));
-        }
-
+       
         // GET: Usuarios/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

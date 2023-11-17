@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using EstudoProjetoCS.Enum;
 
 namespace EstudoProjetoCS.Models
 {
@@ -33,6 +34,10 @@ namespace EstudoProjetoCS.Models
         [DataType(DataType.Date)]
         [Display(Name = "Data da solicitação")]
         public DateTime Data_Solicitacao { get; set; }
+
+        [Required]
+        [Display(Name = "Estado da Solicitação")]
+        public ProcedimentoEnum Estado { get; set; }
 
         [Display(Name = "Atendente")]
         public int IdAtendente { get; set; }

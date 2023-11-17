@@ -1,0 +1,28 @@
+﻿@model IEnumerable<EstudoProjetoCS.Models.Consultas.PivotProcedimentos>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="text-center">
+    <table class="table" id="TablePag">
+        <thead>
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.Mes)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Estado1)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Estado2)</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td scope="row">@Html.DisplayFor(modelItem => item.Mes)</td>
+                    <td scope="row">@Html.DisplayFor(modelItem => item.Estado1)</td>
+                    <td scope="row">@Html.DisplayFor(modelItem => item.Estado2)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <a class="btn btn-primary" role="button" asp-controller="Procedimentos" asp-action="Index">Voltar</a>
+</div>

@@ -4,20 +4,7 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@if (TempData["MenssagemSucesso"] != null)
-{
-    <div class="alert alert-success" role="alert">
-        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
-        @TempData["MenssagemSucesso"]
-    </div>
-}
-@if (TempData["MenssagemErro"] != null)
-{
-    <div class="alert alert-danger" role="alert">
-        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
-        @TempData["MenssagemErro"]
-    </div>
-}
+
 <div class="text-center">
     <h1 class="display-4"> Cadastro de Técnico</h1>
 </div>

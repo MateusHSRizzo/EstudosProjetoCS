@@ -1,0 +1,26 @@
+﻿@model IEnumerable<EstudoProjetoCS.Models.Consultas.grpProcedimentosMes>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="text-center">
+    <table class="table" id="TablePag">
+        <thead>
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.Data_Solicitacao)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Valor)</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td scope="row">@Html.DisplayFor(modelItem => item.Data_Solicitacao)</td>
+                    <td scope="row">@Html.DisplayFor(modelItem => item.Valor)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <a class="btn btn-primary" role="button" asp-controller="Procedimentos" asp-action="Index">Voltar</a>
+</div>

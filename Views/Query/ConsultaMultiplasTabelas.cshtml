@@ -1,0 +1,28 @@
+﻿@model IEnumerable<EstudoProjetoCS.Models.Consultas.grpProcedimentosAno>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="text-center">
+    <table class="table" id="TablePag">
+        <thead>
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.Tecnico)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Valor)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Data)</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td scope="row">@Html.DisplayFor(modelItem => item.Tecnico)</td>
+                    <td scope="row">@Html.DisplayFor(modelItem => item.Valor)</td>
+                    <td scope="row">@Html.DisplayFor(modelItem => item.Data)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <a class="btn btn-primary" role="button" asp-controller="Procedimentos" asp-action="Index">Voltar</a>
+</div>

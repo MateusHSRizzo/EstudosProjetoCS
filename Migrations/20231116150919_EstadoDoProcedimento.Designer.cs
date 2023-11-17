@@ -4,6 +4,7 @@ using EstudoProjetoCS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EstudoProjetoCS.Migrations
 {
     [DbContext(typeof(Contexto))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20231116150919_EstadoDoProcedimento")]
+    partial class EstadoDoProcedimento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,6 +120,29 @@ namespace EstudoProjetoCS.Migrations
                     b.ToTable("Cliente");
                 });
 
+            modelBuilder.Entity("EstudoProjetoCS.Models.MovimentacaoUsuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("DataAtualizacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataCadastro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("usuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Movimentacao");
+                });
+
             modelBuilder.Entity("EstudoProjetoCS.Models.ProcedimentoModel", b =>
                 {
                     b.Property<int>("Id")
@@ -136,8 +162,8 @@ namespace EstudoProjetoCS.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("Estado")
-                        .HasColumnType("int");
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
 
                     b.Property<int>("IdAtendente")
                         .HasColumnType("int");

@@ -135,6 +135,19 @@ namespace EstudoProjetoCS.Controllers
                     procedimento.Prioridade = reader[2].ToString();
                     procedimento.Valor = float.Parse(reader[3].ToString());
                     procedimento.Data_Solicitacao = DateTime.ParseExact(reader[4].ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    int i = randNum.Next(0, 3);
+                    if(i == 0)
+                    {
+                        procedimento.Estado = Enum.ProcedimentoEnum.EmAndamento;
+                    }
+                    else if(i == 1)
+                    {
+                        procedimento.Estado = Enum.ProcedimentoEnum.Concluido;
+                    }
+                    else if (i == 2)
+                    {
+                        procedimento.Estado = Enum.ProcedimentoEnum.Cancelado;
+                    }
                     procedimento.IdAtendente = randNum.Next(1, 12);
                     procedimento.IdCliente = randNum.Next(1, 100);
                     procedimento.IdTecnico = randNum.Next(1, 6);

@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace EstudoProjetoCS.Filters
 {
-    public class PagUsuarioAtendente : ActionFilterAttribute
+    public class PagUsuarioAdmTec : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
@@ -22,9 +22,12 @@ namespace EstudoProjetoCS.Filters
                     context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "controller", "Login" }, { "action", "Index" } });
                 }
 
-                if (usuario.Perfil != Enum.PerfilEnum.atendente)
+                if (usuario.Perfil != Enum.PerfilEnum.admin)
                 {
-                    context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "controller", "Restrito" }, { "action", "Index" } });
+                    if(usuario.Perfil != Enum.PerfilEnum.tecnico)
+                    {
+                        context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "controller", "Restrito" }, { "action", "Index" } });
+                    }
                 }
             }
 
